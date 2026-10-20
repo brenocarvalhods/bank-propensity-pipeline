@@ -1,0 +1,35 @@
+[project]
+name = "bank-propensity-pipeline"
+version = "0.1.0"
+description = "End-to-end ML pipeline for bank term-deposit propensity"
+authors = [
+    {name = "Breno Carvalho",email = "carvalhobrenods@gmail.com"}
+]
+license = "MIT"
+readme = "README.md"
+requires-python = ">=3.11,<3.13"
+dependencies = [
+    "scikit-learn (>=1.9.1,<2.0.0)",
+    "pandas (>=3.0.6,<4.0.0)",
+    "mlflow (>=3.17.1,<4.0.0)",
+    "dvc (>=3.67.1,<4.0.0)",
+    "python-dotenv (>=1.2.4,<2.0.0)",
+    "pyyaml (>=6.0.3,<7.0.0)",
+    "matplotlib (>=3.11.2,<4.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+packages = [{ include = "bank_propensity_pipeline", from = "src" }]
+
+[dependency-groups]
+dev = [
+    "pytest (>=9.1.1,<10.0.0)",
+    "ruff (>=0.17.1,<0.18.0)",
+    "ipykernel (>=7.4.0,<8.0.0)",
+    "seaborn (>=0.13.2,<0.14.0)"
+]
