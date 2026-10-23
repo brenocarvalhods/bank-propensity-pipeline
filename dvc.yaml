@@ -1,0 +1,21 @@
+stages:
+  fetch:
+    cmd: python -m bank_propensity_pipeline.data.fetch
+    deps:
+      - src/bank_propensity_pipeline/data/fetch.py
+    params:
+      - data.source_url
+    outs:
+      - data/raw/bank-additional-full.csv
+
+  preprocess:
+    cmd: python -m bank_propensity_pipeline.data.preprocess
+    deps:
+      - data/raw/bank-additional-full.csv
+      - src/bank_propensity_pipeline/data/preprocess.py
+      - src/bank_propensity_pipeline/data/schema.py
+    params:
+      - seed
+      - data.test_size
+    outs:
+      - data/processed

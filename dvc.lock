@@ -1,0 +1,43 @@
+schema: '2.0'
+stages:
+  fetch:
+    cmd: python -m bank_propensity_pipeline.data.fetch
+    deps:
+    - path: src/bank_propensity_pipeline/data/fetch.py
+      hash: md5
+      md5: 85d8a4001aa4ed554612505d8e3f93bc
+      size: 2327
+    params:
+      params.yaml:
+        data.source_url: 
+          https://archive.ics.uci.edu/static/public/222/bank+marketing.zip
+    outs:
+    - path: data/raw/bank-additional-full.csv
+      hash: md5
+      md5: f6cb2c1256ffe2836b36df321f46e92c
+      size: 5834924
+  preprocess:
+    cmd: python -m bank_propensity_pipeline.data.preprocess
+    deps:
+    - path: data/raw/bank-additional-full.csv
+      hash: md5
+      md5: f6cb2c1256ffe2836b36df321f46e92c
+      size: 5834924
+    - path: src/bank_propensity_pipeline/data/preprocess.py
+      hash: md5
+      md5: 998122f1924d5c129ffa4dd93e124841
+      size: 2871
+    - path: src/bank_propensity_pipeline/data/schema.py
+      hash: md5
+      md5: 4b3d90afde0782a5a94ad83f37139091
+      size: 1278
+    params:
+      params.yaml:
+        data.test_size: 0.2
+        seed: 42
+    outs:
+    - path: data/processed
+      hash: md5
+      md5: 76b6849b8fd34dd9db8c9af30364bbd8.dir
+      size: 4672753
+      nfiles: 2

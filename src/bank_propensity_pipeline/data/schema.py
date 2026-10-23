@@ -29,6 +29,7 @@ COLUMN_RENAMES: dict[str, str] = {
 
 TARGET_COLUMN = "subscribed"
 LEAKAGE_COLUMNS: tuple[str, ...] = ("last_call_duration_sec",)
+NEVER_CONTACTED_CODE = 999
 
 
 def load_raw_dataset(path: Path) -> pd.DataFrame:
