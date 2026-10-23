@@ -4,8 +4,7 @@ data:
   source_url: https://archive.ics.uci.edu/static/public/222/bank+marketing.zip
   raw_path: data/raw/bank-additional-full.csv
   processed_dir: data/processed
-  target: y
   test_size: 0.2
-
+  
 model:
   type: logreg
