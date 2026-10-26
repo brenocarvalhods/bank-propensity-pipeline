@@ -19,3 +19,20 @@ stages:
       - data.test_size
     outs:
       - data/processed
+
+  
+  train:
+    cmd: python -m bank_propensity_pipeline.models.train
+    deps:
+      - data/processed
+      - src/bank_propensity_pipeline/features/build.py
+      - src/bank_propensity_pipeline/models/train.py
+    params:
+      - seed
+      - model
+      - train
+    outs:
+      - models/model.joblib
+    metrics:
+      - metrics/train.json:
+          cache: false
