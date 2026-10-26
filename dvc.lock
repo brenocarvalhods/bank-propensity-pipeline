@@ -41,3 +41,38 @@ stages:
       md5: 76b6849b8fd34dd9db8c9af30364bbd8.dir
       size: 4672753
       nfiles: 2
+  train:
+    cmd: python -m bank_propensity_pipeline.models.train
+    deps:
+    - path: data/processed
+      hash: md5
+      md5: 76b6849b8fd34dd9db8c9af30364bbd8.dir
+      size: 4672753
+      nfiles: 2
+    - path: src/bank_propensity_pipeline/features/build.py
+      hash: md5
+      md5: 2581e81e99788be5a39ff097c90db2b1
+      size: 1488
+    - path: src/bank_propensity_pipeline/models/train.py
+      hash: md5
+      md5: 67c9bee19ab733ebd5b7ca22b8845e29
+      size: 2897
+    params:
+      params.yaml:
+        model:
+          type: logreg
+          logreg:
+            C: 1.0
+            max_iter: 1000
+        seed: 42
+        train:
+          cv_folds: 5
+    outs:
+    - path: metrics/train.json
+      hash: md5
+      md5: b4d8e444f2b7d26f75f611cc492555a9
+      size: 72
+    - path: models/model.joblib
+      hash: md5
+      md5: 81ef12311ae4639f087abb1dcc5490c7
+      size: 7121

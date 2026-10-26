@@ -8,3 +8,9 @@ data:
   
 model:
   type: logreg
+  logreg:
+    C: 1.0
+    max_iter: 1000
+
+train:
+  cv_folds: 5
