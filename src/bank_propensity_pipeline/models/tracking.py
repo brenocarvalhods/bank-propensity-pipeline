@@ -39,7 +39,7 @@ def log_training_run(
     model: Pipeline, params: dict[str, Any], metrics: dict[str, float], features: pd.DataFrame
 ) -> str:
     """Log params, metrics and the fitted model as one MLflow run and return its id."""
-    with mlflow.start_run() as run:
+    with mlflow.start_run(run_name=params["model"]["type"]) as run:
         mlflow.log_params(flatten_params(params))
         mlflow.log_metrics(metrics)
         mlflow.set_tag("model_type", params["model"]["type"])

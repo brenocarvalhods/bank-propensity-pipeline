@@ -55,8 +55,8 @@ stages:
       size: 1488
     - path: src/bank_propensity_pipeline/models/tracking.py
       hash: md5
-      md5: af637e91d8ea5c506b83aed501ac6edf
-      size: 1891
+      md5: a6f6e3d1604fa0ad90eb016c54f49e33
+      size: 1923
     - path: src/bank_propensity_pipeline/models/train.py
       hash: md5
       md5: fcd610fd9219e3c5cebf6fc627eddbd6
