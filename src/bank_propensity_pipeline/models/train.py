@@ -6,6 +6,8 @@ from typing import Any
 
 import joblib
 import pandas as pd
+from sklearn.base import ClassifierMixin
+from sklearn.ensemble import HistGradientBoostingClassifier, RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import StratifiedKFold, cross_validate
 from sklearn.pipeline import Pipeline
@@ -22,14 +24,21 @@ METRICS_PATH = PROJECT_ROOT / "metrics" / "train.json"
 CV_SCORING = {"pr_auc": "average_precision", "roc_auc": "roc_auc", "f1": "f1"}
 
 
-def build_model(model_params: dict[str, Any], seed: int) -> Pipeline:
-    """Combine the preprocessor and a balanced logistic regression in one pipeline."""
-    classifier = LogisticRegression(
-        C=model_params["C"],
-        max_iter=model_params["max_iter"],
-        class_weight="balanced",
-        random_state=seed,
-    )
+def build_classifier(model_type: str, model_params: dict[str, Any], seed: int) -> ClassifierMixin:
+    """Create the classifier selected in params.yaml with its hyperparameters."""
+    builders = {
+        "logreg": lambda: LogisticRegression(**model_params, class_weight="balanced"),
+        "rf": lambda: RandomForestClassifier(**model_params, class_weight="balanced", n_jobs=-1),
+        "hgb": lambda: HistGradientBoostingClassifier(**model_params, class_weight="balanced"),
+    }
+    if model_type not in builders:
+        raise ValueError(f"Unknown model type '{model_type}'. Options: {sorted(builders)}")
+    return builders[model_type]().set_params(random_state=seed)
+
+
+def build_model(model_type: str, model_params: dict[str, Any], seed: int) -> Pipeline:
+    """Combine the preprocessor and the selected classifier in one pipeline."""
+    classifier = build_classifier(model_type, model_params, seed)
     return Pipeline([("preprocessor", build_preprocessor()), ("classifier", classifier)])
 
 
@@ -61,13 +70,15 @@ def main() -> None:
     params = load_params()
     train = pd.read_csv(PROJECT_ROOT / params["data"]["processed_dir"] / "train.csv")
     features, target = split_features_target(train)
-    model = build_model(params["model"]["logreg"], params["seed"])
+    model_type = params["model"]["type"]
+    model = build_model(model_type, params["model"][model_type], params["seed"])
     metrics = cross_validate_model(
         model, features, target, params["train"]["cv_folds"], params["seed"]
     )
     model.fit(features, target)
     save_artifacts(model, metrics)
     log_training_run(model, params, metrics, features)
+
 
 if __name__ == "__main__":
     main()

@@ -5,12 +5,20 @@ data:
   raw_path: data/raw/bank-additional-full.csv
   processed_dir: data/processed
   test_size: 0.2
-  
+
 model:
-  type: logreg
+  type: hgb
   logreg:
     C: 1.0
     max_iter: 1000
+  rf:
+    n_estimators: 300
+    max_depth: 15
+    min_samples_leaf: 5
+  hgb:
+    learning_rate: 0.05
+    max_iter: 500
+    max_leaf_nodes: 31
 
 train:
   cv_folds: 5
