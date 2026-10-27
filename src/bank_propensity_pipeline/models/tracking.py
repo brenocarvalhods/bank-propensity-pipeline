@@ -16,7 +16,10 @@ logger = logging.getLogger(__name__)
 MODEL_ARTIFACT_NAME = "model"
 INPUT_EXAMPLE_ROWS = 5
 # Types created by our own tree-based models; safe to load because we produce the files ourselves.
-SKOPS_TRUSTED_TYPES = ["sklearn.tree._tree.Tree"]
+SKOPS_TRUSTED_TYPES = [
+    "sklearn.tree._tree.Tree",
+    "sklearn.ensemble._hist_gradient_boosting.predictor.TreePredictor",
+]
 
 
 def configure_mlflow(settings: Settings) -> None:
