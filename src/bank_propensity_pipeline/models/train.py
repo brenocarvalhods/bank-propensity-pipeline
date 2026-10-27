@@ -13,6 +13,7 @@ from sklearn.pipeline import Pipeline
 from bank_propensity_pipeline.config import PROJECT_ROOT, load_params, load_settings
 from bank_propensity_pipeline.features.build import build_preprocessor, split_features_target
 from bank_propensity_pipeline.logging_config import setup_logging
+from bank_propensity_pipeline.models.tracking import configure_mlflow, log_training_run
 
 logger = logging.getLogger(__name__)
 
@@ -54,7 +55,9 @@ def save_artifacts(model: Pipeline, metrics: dict[str, float]) -> None:
 
 def main() -> None:
     """Entry point used by the DVC train stage."""
-    setup_logging(load_settings().log_level)
+    settings = load_settings()
+    setup_logging(settings.log_level)
+    configure_mlflow(settings)
     params = load_params()
     train = pd.read_csv(PROJECT_ROOT / params["data"]["processed_dir"] / "train.csv")
     features, target = split_features_target(train)
@@ -64,7 +67,7 @@ def main() -> None:
     )
     model.fit(features, target)
     save_artifacts(model, metrics)
-
+    log_training_run(model, params, metrics, features)
 
 if __name__ == "__main__":
     main()

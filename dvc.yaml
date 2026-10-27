@@ -27,6 +27,7 @@ stages:
       - data/processed
       - src/bank_propensity_pipeline/features/build.py
       - src/bank_propensity_pipeline/models/train.py
+      - src/bank_propensity_pipeline/models/tracking.py
     params:
       - seed
       - model
