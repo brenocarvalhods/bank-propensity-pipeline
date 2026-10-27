@@ -15,6 +15,8 @@ logger = logging.getLogger(__name__)
 
 MODEL_ARTIFACT_NAME = "model"
 INPUT_EXAMPLE_ROWS = 5
+# Types created by our own tree-based models; safe to load because we produce the files ourselves.
+SKOPS_TRUSTED_TYPES = ["sklearn.tree._tree.Tree"]
 
 
 def configure_mlflow(settings: Settings) -> None:
@@ -49,6 +51,7 @@ def log_training_run(
             name=MODEL_ARTIFACT_NAME,
             signature=signature,
             input_example=features.head(INPUT_EXAMPLE_ROWS),
+            skops_trusted_types=SKOPS_TRUSTED_TYPES,
         )
     logger.info("Logged MLflow run %s", run.info.run_id)
     return run.info.run_id
