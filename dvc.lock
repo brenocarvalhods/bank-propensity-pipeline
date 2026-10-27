@@ -55,8 +55,8 @@ stages:
       size: 1520
     - path: src/bank_propensity_pipeline/models/tracking.py
       hash: md5
-      md5: a6f6e3d1604fa0ad90eb016c54f49e33
-      size: 1923
+      md5: 9e67e73d10808279250edcb4dbb3a3f1
+      size: 2210
     - path: src/bank_propensity_pipeline/models/train.py
       hash: md5
       md5: d0281c9822efaf64ece82c827d7e21da
@@ -64,17 +64,17 @@ stages:
     params:
       params.yaml:
         model:
-          type: logreg
+          type: hgb
           logreg:
             C: 1.0
             max_iter: 1000
           rf:
             n_estimators: 300
-            max_depth: 10
+            max_depth: 15
             min_samples_leaf: 5
           hgb:
-            learning_rate: 0.1
-            max_iter: 300
+            learning_rate: 0.05
+            max_iter: 500
             max_leaf_nodes: 31
         seed: 42
         train:
@@ -82,9 +82,9 @@ stages:
     outs:
     - path: metrics/train.json
       hash: md5
-      md5: b4d8e444f2b7d26f75f611cc492555a9
+      md5: 4805e7582b6fd1e5ff2d8c1a3d878d02
       size: 72
     - path: models/model.joblib
       hash: md5
-      md5: 9463ff6d5caca1a4812315267cb139c4
-      size: 7121
+      md5: 24ecd971d264f11cc844e3748714e24a
+      size: 396937
