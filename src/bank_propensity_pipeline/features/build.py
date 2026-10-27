@@ -44,5 +44,6 @@ def build_preprocessor() -> ColumnTransformer:
         transformers=[
             ("numeric", StandardScaler(), list(NUMERIC_FEATURES)),
             ("categorical", OneHotEncoder(handle_unknown="ignore"), list(CATEGORICAL_FEATURES)),
-        ]
+        ],
+        sparse_threshold=0.0,
     )
