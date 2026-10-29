@@ -1,0 +1,25 @@
+# Version control and local environments
+.git
+.gitignore
+.gitattributes
+.dvc
+.venv
+.env
+
+# Generated data, models and tracking (rebuilt inside the container)
+data/
+models/
+metrics/
+reports/
+mlruns/
+mlartifacts/
+mlflow.db
+
+# Development only
+notebooks/
+tests/
+docs/
+.pytest_cache/
+.ruff_cache/
+__pycache__/
+*.pyc
