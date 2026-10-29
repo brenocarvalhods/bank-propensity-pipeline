@@ -3,6 +3,7 @@
 import pandas as pd
 
 from bank_propensity_pipeline.models.evaluate import (
+    business_metrics,
     campaign_profit,
     find_best_threshold,
     lift_by_decile,
@@ -34,3 +35,11 @@ def test_lift_by_decile_ranks_best_clients_first() -> None:
     assert len(table) == 10
     assert table.loc[1, "lift"] == 5.0
     assert table["cumulative_capture"].iloc[-1] == 1.0
+
+
+
+def test_business_metrics_compares_model_with_calling_everyone() -> None:
+    metrics = business_metrics(TARGET, SCORES, **COSTS)
+    assert metrics["profit_model"] == 84.0
+    assert metrics["profit_call_all"] == 20.0
+    assert metrics["share_called"] == 0.2
