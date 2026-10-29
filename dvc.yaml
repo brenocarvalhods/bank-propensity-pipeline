@@ -39,3 +39,23 @@ stages:
     metrics:
       - metrics/train.json:
           cache: false
+
+
+  evaluate:
+    cmd: python -m bank_propensity_pipeline.models.evaluate
+    deps:
+      - data/processed
+      - models/model.joblib
+      - models/run_info.json
+      - src/bank_propensity_pipeline/models/evaluate.py
+    params:
+      - business
+    outs:
+      - reports/lift_by_decile.csv:
+          cache: false
+    metrics:
+      - metrics/eval.json:
+          cache: false
+    plots:
+      - reports/lift_by_decile.png:
+          cache: false

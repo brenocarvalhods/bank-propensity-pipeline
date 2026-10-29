@@ -92,3 +92,41 @@ stages:
       hash: md5
       md5: 6edb51ce43d308dcd7fd49915fb96f9d
       size: 138
+  evaluate:
+    cmd: python -m bank_propensity_pipeline.models.evaluate
+    deps:
+    - path: data/processed
+      hash: md5
+      md5: 76b6849b8fd34dd9db8c9af30364bbd8.dir
+      size: 4672753
+      nfiles: 2
+    - path: models/model.joblib
+      hash: md5
+      md5: 24ecd971d264f11cc844e3748714e24a
+      size: 396937
+    - path: models/run_info.json
+      hash: md5
+      md5: 6edb51ce43d308dcd7fd49915fb96f9d
+      size: 138
+    - path: src/bank_propensity_pipeline/models/evaluate.py
+      hash: md5
+      md5: 6b99b1db38e123f21676151a444d470f
+      size: 6369
+    params:
+      params.yaml:
+        business:
+          cost_per_call: 8.0
+          margin_per_deposit: 50.0
+    outs:
+    - path: metrics/eval.json
+      hash: md5
+      md5: eabef95915978f832944eaad6b27748c
+      size: 247
+    - path: reports/lift_by_decile.csv
+      hash: md5
+      md5: c4c3298239f8956df418f0eb19ca9f30
+      size: 374
+    - path: reports/lift_by_decile.png
+      hash: md5
+      md5: 23f0ad03684d6c254d6089dedd09c6dc
+      size: 19835

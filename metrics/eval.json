@@ -1,0 +1,11 @@
+{
+  "test_pr_auc": 0.4965,
+  "test_roc_auc": 0.8157,
+  "test_precision": 0.4348,
+  "test_recall": 0.6433,
+  "test_f1": 0.5189,
+  "best_threshold": 0.53,
+  "profit_model": 18866.0,
+  "profit_call_all": -19504.0,
+  "share_called": 0.1667
+}

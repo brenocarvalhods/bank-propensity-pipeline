@@ -22,3 +22,8 @@ model:
 
 train:
   cv_folds: 5
+
+
+business:
+  cost_per_call: 8.0
+  margin_per_deposit: 50.0
