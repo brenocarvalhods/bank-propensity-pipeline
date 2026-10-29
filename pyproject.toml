@@ -32,7 +32,8 @@ dev = [
     "pytest (>=9.1.1,<10.0.0)",
     "ruff (>=0.17.1,<0.18.0)",
     "ipykernel (>=7.4.0,<8.0.0)",
-    "seaborn (>=0.13.2,<0.14.0)"
+    "seaborn (>=0.13.2,<0.14.0)",
+    "pytest-cov (>=7.1.0,<8.0.0)"
 ]
 
 
@@ -51,3 +52,7 @@ quote-style = "double"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+
+
+[tool.coverage.report]
+exclude_also = ['if __name__ == "__main__":']
