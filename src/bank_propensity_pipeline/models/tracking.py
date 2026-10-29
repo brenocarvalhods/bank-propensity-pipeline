@@ -40,6 +40,19 @@ def flatten_params(params: dict[str, Any], prefix: str = "") -> dict[str, Any]:
     return flat
 
 
+def log_model_artifact(model: Pipeline, features: pd.DataFrame) -> str:
+    """Log the fitted pipeline with its signature and input example, returning the model URI."""
+    signature = infer_signature(features, model.predict(features))
+    model_info = mlflow.sklearn.log_model(
+        model,
+        name=MODEL_ARTIFACT_NAME,
+        signature=signature,
+        input_example=features.head(INPUT_EXAMPLE_ROWS),
+        skops_trusted_types=SKOPS_TRUSTED_TYPES,
+    )
+    return model_info.model_uri
+
+
 def log_training_run(
     model: Pipeline, params: dict[str, Any], metrics: dict[str, float], features: pd.DataFrame
 ) -> tuple[str, str]:
@@ -51,13 +64,6 @@ def log_training_run(
         mlflow.log_params(flatten_params(params))
         mlflow.log_metrics(metrics)
         mlflow.set_tag("model_type", params["model"]["type"])
-        signature = infer_signature(features, model.predict(features))
-        model_info = mlflow.sklearn.log_model(
-            model,
-            name=MODEL_ARTIFACT_NAME,
-            signature=signature,
-            input_example=features.head(INPUT_EXAMPLE_ROWS),
-            skops_trusted_types=SKOPS_TRUSTED_TYPES,
-        )
+        model_uri = log_model_artifact(model, features)
     logger.info("Logged MLflow run %s", run.info.run_id)
-    return run.info.run_id, model_info.model_uri
+    return run.info.run_id, model_uri
