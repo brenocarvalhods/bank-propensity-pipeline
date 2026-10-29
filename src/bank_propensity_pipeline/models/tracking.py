@@ -42,14 +42,17 @@ def flatten_params(params: dict[str, Any], prefix: str = "") -> dict[str, Any]:
 
 def log_training_run(
     model: Pipeline, params: dict[str, Any], metrics: dict[str, float], features: pd.DataFrame
-) -> str:
-    """Log params, metrics and the fitted model as one MLflow run and return its id."""
+) -> tuple[str, str]:
+    """Log params, metrics and the fitted model as one MLflow run.
+
+    Returns the run id and the URI of the logged model.
+    """
     with mlflow.start_run(run_name=params["model"]["type"]) as run:
         mlflow.log_params(flatten_params(params))
         mlflow.log_metrics(metrics)
         mlflow.set_tag("model_type", params["model"]["type"])
         signature = infer_signature(features, model.predict(features))
-        mlflow.sklearn.log_model(
+        model_info = mlflow.sklearn.log_model(
             model,
             name=MODEL_ARTIFACT_NAME,
             signature=signature,
@@ -57,4 +60,4 @@ def log_training_run(
             skops_trusted_types=SKOPS_TRUSTED_TYPES,
         )
     logger.info("Logged MLflow run %s", run.info.run_id)
-    return run.info.run_id
+    return run.info.run_id, model_info.model_uri

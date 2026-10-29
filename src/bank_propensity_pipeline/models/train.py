@@ -22,6 +22,7 @@ logger = logging.getLogger(__name__)
 MODEL_PATH = PROJECT_ROOT / "models" / "model.joblib"
 METRICS_PATH = PROJECT_ROOT / "metrics" / "train.json"
 CV_SCORING = {"pr_auc": "average_precision", "roc_auc": "roc_auc", "f1": "f1"}
+RUN_INFO_PATH = PROJECT_ROOT / "models" / "run_info.json"
 
 
 def build_classifier(model_type: str, model_params: dict[str, Any], seed: int) -> ClassifierMixin:
@@ -77,7 +78,15 @@ def main() -> None:
     )
     model.fit(features, target)
     save_artifacts(model, metrics)
-    log_training_run(model, params, metrics, features)
+    run_id, model_uri = log_training_run(model, params, metrics, features)
+    save_run_info(run_id, model_uri, model_type)
+
+
+def save_run_info(run_id: str, model_uri: str, model_type: str) -> None:
+    """Save which MLflow run produced the model, so the registry step can find it."""
+    run_info = {"run_id": run_id, "model_uri": model_uri, "model_type": model_type}
+    RUN_INFO_PATH.write_text(json.dumps(run_info, indent=2), encoding="utf-8")
+    logger.info("Saved run info to %s", RUN_INFO_PATH)
 
 
 if __name__ == "__main__":
