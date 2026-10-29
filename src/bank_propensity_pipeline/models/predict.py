@@ -52,7 +52,9 @@ def main() -> None:
     scores = score_clients(load_champion(settings.mlflow_model_name), features)
     logger.info("Scored %d clients", len(scores))
     logger.info("Base conversion rate: %.1f%%", target.mean() * 100)
-    logger.info("Top 10%% scored conversion rate: %.1f%%", top_share_conversion(scores, target) * 100)
+    logger.info(
+        "Top 10%% scored conversion rate: %.1f%%", top_share_conversion(scores, target) * 100
+    )
 
 
 if __name__ == "__main__":
