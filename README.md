@@ -213,10 +213,6 @@ Tests use only synthetic data and in-memory archives, so they run without networ
 - The decision threshold was chosen on the test set, so the profit estimate is slightly optimistic.
 - Next steps: out-of-time validation, probability calibration, a remote DVC storage, CI with GitHub Actions and a cloud deployment of the scoring service.
 
-## Video
-
-STAR presentation (5 minutes): _link to be added_
-
 ## Author
 
 Breno Carvalho · [GitHub](https://github.com/brenocarvalhods)
